@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin | Gestão de E-commerce</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* VARIÁVEIS DE CORES - DARK MODE PROFISSIONAL */
+        :root {
+            --primary-color: #007AFF; /* Azul Moderno (Ação) */
+            --accent-color: #34C759; /* Verde de Sucesso (Pix) */
+            --warning-color: #FF9500; /* Laranja de Alerta */
+            --danger-color: #FF3B30; /* Vermelho de Perigo */
+            
+            --background-dark: #1C1C1E; /* Fundo Principal */
+            --card-bg: #2C2C2E; /* Cor do Card/Conteúdo */
+            --border-color: #444446; /* Borda Suave */
+            --text-light: #F2F2F7; /* Texto Principal */
+            --text-medium: #AEAEB2; /* Texto Secundário */
+            --text-dark: #636366; /* Texto de Destaque Sutil */
+            
+            --input-bg: #3A3A3C; /* Fundo de Input */
+            --hover-bg: #3A3A3C; /* Fundo de Hover */
+        }
+
+        /* RESET E BASE */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-dark);
+            color: var(--text-light); 
+            padding: 0;
+            margin: 0;
+        }
+        .config-container {
+            max-width: 1200px; 
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1 {
+            color: var(--text-light);
+            font-size: 2.2em;
+            margin-bottom: 5px;
+            font-weight: 800;
+        }
+        h2 {
+            color: var(--text-light);
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* INPUTS E FORMULÁRIOS */
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--text-medium);
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+        input[type="text"], input[type="number"], select, input[type="date"], textarea, input[type="color"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            background-color: var(--input-bg); 
+            color: var(--text-light); 
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        input[type="color"] {
+             width: 150px;
+             height: 40px;
+             padding: 0;
+             margin-bottom: 0;
+             cursor: pointer;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.5);
+            outline: none;
+        }
+        /* BOTÕES */
+        button {
+            width: 100%;
+            padding: 14px;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.05em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 10px;
+        }
+        .btn-primary { background-color: var(--primary-color); }
+        .btn-accent { background-color: var(--accent-color); }
+        .btn-delete { background-color: var(--danger-color); }
+        .btn-warning { background-color: var(--warning-color); color: #1C1C1E; }
+        .btn-info { background-color: #3F51B5; } 
+        /* CORREÇÃO DO BOTÃO VER PÁGINA */
+        .btn-view-page {
+            width: auto;
+            padding: 8px 15px;
+            background-color: var(--accent-color) !important; /* Corrigido para verde */
+            color: white;
+            margin: 0;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+
+        /* DASHBOARD E MÉTRICAS */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; 
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .metric-card {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+        }
+        /* CORREÇÃO DO VALOR GRANDE */
+        .metric-card .value {
+            font-size: 2.5em; /* Aumentado */
+            font-weight: 800;
+            color: var(--primary-color);
+            margin: 5px 0 10px 0;
+        }
+        .metric-card .subtext {
+            color: var(--text-medium);
+            font-size: 0.9em;
+        }
+        
+        /* NAVEGAÇÃO POR ABAS (TABS) */
+        .tab-container {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            overflow-x: auto;
+        }
+        .tab-button {
+            background-color: transparent;
+            color: var(--text-medium);
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: color 0.3s, border-bottom 0.3s;
+            white-space: nowrap;
+        }
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            margin-bottom: -2px;
+        }
+
+        /* ACORDION / SANFONA (NOVO) */
+        .accordion-item {
+             margin-bottom: 15px;
+             border: 1px solid var(--border-color);
+             border-radius: 8px;
+             overflow: hidden;
+             background-color: var(--card-bg);
+        }
+        .accordion-header {
+             padding: 15px;
+             background-color: var(--input-bg);
+             cursor: pointer;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             font-weight: 700;
+             font-size: 1.1em;
+             transition: background-color 0.2s;
+        }
+        .accordion-header:hover {
+             background-color: var(--hover-bg);
+        }
+        .accordion-content {
+             padding: 15px 30px;
+             display: none;
+             border-top: 1px solid var(--border-color);
+        }
+        .accordion-header span.icon {
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+        .accordion-header.active span.icon {
+            transform: rotate(90deg);
+        }
+
+        /* GERENCIAMENTO DE PRODUTOS */
+        .form-grid-2-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .image-preview-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .image-preview {
+            width: 80px; height: 80px; border-radius: 6px; background-color: var(--input-bg); background-size: cover; background-position: center; border: 1px solid var(--border-color); overflow: hidden;
+        }
+        
+        /* OPÇÕES DE DESIGN e CMS */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .color-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .link-item { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 10px; 
+            align-items: center;
+        }
+        .link-item input { flex-grow: 1; }
+        .btn-remove-link {
+            width: auto;
+            padding: 5px 10px;
+            margin: 0;
+            background-color: var(--danger-color);
+            font-size: 0.9em;
+        }
+        .cms-item-card {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+        .cms-actions button {
+            width: auto;
+            padding: 8px 12px;
+            margin: 0 5px;
+            font-size: 0.9em;
+        }
+        
+        /* ESTILOS DE PEDIDOS */
+        .order-card {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 5px solid var(--primary-color);
+        }
+        .order-header {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             cursor: pointer;
+        }
+        .order-header h4 { margin: 0; font-size: 1.1em; }
+        .order-header span { font-weight: 700; color: var(--accent-color); }
+        .order-details-content { 
+            margin-top: 10px; 
+            padding-top: 10px; 
+            border-top: 1px dashed var(--border-color); 
+            display: none; 
+        }
+        .order-details-content p { margin: 5px 0; font-size: 0.95em; color: var(--text-medium); }
+        .status-badge { 
+             padding: 4px 8px; 
+             border-radius: 4px; 
+             font-size: 0.8em; 
+             font-weight: 700; 
+             background-color: var(--danger-color); 
+             color: white; 
+        }
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid-2-col, .settings-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="config-container">
+
+    <div class="dashboard-header">
+        <div class="logo-section">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Kiwify_logo_horizontal.svg/2560px-Kiwify_logo_horizontal.svg.png" alt="Kiwify Logo" style="max-height: 40px;">
+        </div>
+        <button class="btn-info" onclick="window.open('index.html', '_blank')" style="width: auto; padding: 10px 15px; margin-top: 0;">
+            👁️ Ver Loja
+        </button>
+    </div>
+
+    <div id="message" class="message" style="display:none;"></div>
+
+
+    <div class="tab-container">
+        <button class="tab-button active" onclick="openTab(event, 'dashboard')">📈 Dashboard</button>
+        <button class="tab-button" onclick="openTab(event, 'productManagement')">📦 Produtos</button>
+        <button class="tab-button" onclick="openTab(event, 'storeSettings')">🎨 Design/SEO</button>
+        <button class="tab-button" onclick="openTab(event, 'pageManagement')">📄 Páginas CMS</button>
+        <button class="tab-button" onclick="openTab(event, 'customerOrders')">👥 Pedidos</button>
+    </div>
+
+
+    <div id="dashboard" class="tab-content">
+        
+        <h2>📊 Resumo de Métricas Financeiras</h2>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <h3>Vendas TOTAL (Histórico)</h3>
+                <p class="value" id="totalHistoryPlaceholder">R$ 0,00</p>
+                <p class="subtext">Total acumulado desde o início.</p>
+            </div>
+             <div class="metric-card">
+                <h3>Total de VISUALIZAÇÕES</h3>
+                <p class="value" id="totalViews">0</p>
+                <p class="subtext">Acessos únicos às páginas de produtos.</p>
+            </div>
+             <div class="metric-card">
+                <h3>Pedidos Pendentes</h3>
+                <p class="value" id="pendingOrdersCount">0</p>
+                <p class="subtext">Clientes que iniciaram o checkout.</p>
+            </div>
+            <div class="metric-card">
+                <h3>Vendas de HOJE</h3>
+                <p class="value" id="dailyTotal">R$ 0,00</p>
+                <p class="subtext">Atualizado: <span id="lastUpdated">...</span></p>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 40px;">✅ Registrar Venda Manualmente</h2>
+        <label for="productSelectLog">Selecione o Produto para Marcar Venda:</label>
+        <select id="productSelectLog"></select>
+
+        <button id="logSaleButton" class="btn-accent" style="margin-top: 15px;">✅ REGISTRAR VENDA DESTE PRODUTO</button>
+
+        <h2 style="margin-top: 40px;">⚠️ Gerenciamento de Dados</h2>
+        <p style="color: var(--danger-color); font-size: 0.9em;">Use o botão abaixo para zerar as métricas financeiras e contadores de visualização de todos os produtos. Esta ação não pode ser desfeita!</p>
+        <button id="resetMetricsButton" class="btn-delete" onclick="resetMetrics()">RESETAR TODAS AS MÉTRICAS (Vendas e Views)</button>
+
+    </div>
+
+    <div id="storeSettings" class="tab-content" style="display:none;">
+        <h2>🎨 Configurações da Loja e Layout (Acordeão)</h2>
+        <button id="saveStoreSettingsButtonTop" class="btn-primary" onclick="saveStoreSettings()">SALVAR TODAS AS CONFIGURAÇÕES</button>
+        
+        <div class="accordion-item">
+            <div class="accordion-header active" data-accordion="identity">
+                Identidade Visual e Layout <span class="icon">&rsaquo;</span>
+            </div>
+            <div class="accordion-content" id="identityContent" style="display:block;">
+                <h3 style="margin-top: 0;">Identidade Visual e SEO</h3>
+                <div class="settings-grid">
+                    <div>
+                        <label for="storeTitleInput">Título da Loja (SEO e Header):</label>
+                        <input type="text" id="storeTitleInput" placeholder="Ex: Kiwify Viagens">
+                    </div>
+                    <div>
+                        <label for="logoUrlInput">URL da Logo:</label>
+                        <input type="text" id="logoUrlInput" placeholder="Ex: https://sua.url/logo.png">
+                    </div>
+                    <div>
+                        <label for="faviconUrlInput">URL do Ícone do Site (Favicon - 32x32px):</label>
+                        <input type="text" id="faviconUrlInput" placeholder="Ex: https://sua.url/favicon.ico">
+                    </div>
+                    <div>
+                        <label for="customCopyrightTextInput">Texto de Copyright do Rodapé:</label>
+                        <input type="text" id="customCopyrightTextInput" placeholder="© 2025 Sua Loja Personalizada. Todos os direitos reservados.">
+                    </div>
+                    <div>
+                        <label for="bannerUrlInput">URL do Banner Gigante (400px de altura):</label>
+                        <input type="text" id="bannerUrlInput" placeholder="Ex: https://sua.url/banner-principal.jpg">
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 30px;">Layout e Grid de Produtos</h3>
+                <div class="settings-grid">
+                    <div>
+                         <label for="productsPerLineInput">Produtos por Linha (Desktop - 3 a 5):</label>
+                         <input type="number" id="productsPerLineInput" min="3" max="5" value="4">
+                    </div>
+                     <div>
+                        <label for="productsPerLineMobileInput">Produtos por Linha (Mobile - 1 a 2):</label>
+                        <input type="number" id="productsPerLineMobileInput" min="1" max="2" value="2">
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px;">Cores e Estilos</h3>
+                <div class="settings-grid">
+                    <div class="color-selector">
+                        <div>
+                            <label for="primaryColorInput">Cor Primária (Botões e Destaques):</label>
+                            <input type="color" id="primaryColorInput" value="#5B48CC">
+                        </div>
+                        <div>
+                            <label for="secondaryColorInput">Cor Secundária (Preços e Sucesso):</label>
+                            <input type="color" id="secondaryColorInput" value="#28a745">
+                        </div>
+                    </div>
+                    <div class="color-selector">
+                        <div>
+                            <label for="headerColorInput">Cor do CABEÇALHO (Largura Total):</label>
+                            <input type="color" id="headerColorInput" value="#ffffff">
+                        </div>
+                        <div>
+                            <label for="footerColorInput">Cor do RODAPÉ (Largura Total):</label>
+                            <input type="color" id="footerColorInput" value="#333333">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header" data-accordion="links">
+                Links de Navegação (Menu e Rodapé) <span class="icon">&rsaquo;</span>
+            </div>
+            <div class="accordion-content" id="linksContent">
+                <h3 style="margin-top: 0;">Links do Menu Principal (Páginas)</h3>
+                <p style="color: var(--text-medium); font-size: 0.9em;">**Nota:** Use URLs de Páginas CMS (/page.php?url=contato) para links customizados. **"Home" é obrigatório.**</p>
+                <div id="headerLinksContainer">
+                    </div>
+                <button class="btn-warning" onclick="addLinkField('header')">➕ Adicionar Novo Link ao Menu</button>
+
+                <h3 style="margin-top: 30px;">Links do Rodapé (Políticas)</h3>
+                <div id="footerLinksContainer">
+                    </div>
+                <button class="btn-warning" onclick="addLinkField('footer')">➕ Adicionar Novo Link ao Rodapé</button>
+            </div>
+        </div>
+
+        <button id="saveStoreSettingsButtonBottom" class="btn-primary" style="margin-top: 30px;" onclick="saveStoreSettings()">SALVAR TODAS AS CONFIGURAÇÕES</button>
+    </div>
+
+
+    <div id="productManagement" class="tab-content" style="display:none;">
+        
+        <h2>📦 Gestão de Produtos (Acordeão)</h2>
+
+        <div class="accordion-item">
+            <div class="accordion-header active" data-accordion="create-product">
+                ✨ Criar Novo Produto / Configuração Inicial <span class="icon">&rsaquo;</span>
+            </div>
+            <div class="accordion-content" id="createProductContent" style="display:block;">
+                <input type="hidden" id="productKeyInputHidden" value="">
+                
+                <div class="form-grid-2-col">
+                    
+                    <div>
+                        <label for="productTitleInput">Título do Produto (Para Exibição):</label>
+                        <input type="text" id="productTitleInput" placeholder="Ex: Pacote Férias Imperdível 2024">
+                    </div>
+
+                    <div>
+                        <label for="productValueInput">Valor do Produto (Formato Ex: 4.500,00):</label>
+                        <input type="text" id="productValueInput" placeholder="Ex: 4.500,00">
+                    </div>
+                    
+                     <div>
+                        <label for="productCategoryInput">Categoria do Produto:</label>
+                        <input type="text" id="productCategoryInput" placeholder="Ex: Viagens Premium, Eletrônicos">
+                    </div>
+
+                    <div>
+                        <label for="paymentMethodSelect">Forma de Pagamento (Checkout):</label>
+                        <select id="paymentMethodSelect">
+                            <option value="PIX">PIX (Chave Copia e Cola)</option>
+                            <option value="BOLETO">BOLETO (Código de Barras)</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="numKeysSelect">Número de Chaves/Códigos Rotativos:</label>
+                        <select id="numKeysSelect">
+                            <option value="1">1 Chave/Código</option>
+                            <option value="3">3 Chaves/Códigos</option>
+                            <option value="5">5 Chaves/Códigos</option>
+                            <option value="10">10 Chaves/Códigos</option>
+                        </select>
+                    </div>
+                     <div>
+                        <label for="visibilitySelect">Visibilidade na Loja:</label>
+                        <select id="visibilitySelect">
+                            <option value="visible">Mostrar na Loja</option>
+                            <option value="hidden">Ocultar da Loja (Apenas Link Direto)</option>
+                        </select>
+                    </div>
+                    
+                </div>
+                
+                <label for="productDescriptionInput">Descrição Detalhada do Produto (Suporta HTML e CSS - Opcional):</label>
+                <textarea id="productDescriptionInput" rows="5" placeholder="Digite uma descrição rica sobre o produto..."></textarea>
+                
+                <label for="imageUrlsInput">URLs de Imagem (Até 4 fotos, separadas por vírgula):</label>
+                <input type="text" id="imageUrlsInput" placeholder="URL da foto principal, URL da foto 2, ...">
+                
+                <div class="image-preview-container" id="imagePreviewContainer">
+                    </div>
+
+                <button id="createProductButton" class="btn-warning">CRIAR NOVO PRODUTO</button>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header" data-accordion="manage-product">
+                🔑 Gerenciar e Excluir Produtos Existentes <span class="icon">&rsaquo;</span>
+            </div>
+            <div class="accordion-content" id="manageProductContent">
+                <label for="selectProductToManage">Selecione o Produto:</label>
+                <select id="selectProductToManage"></select>
+                
+                <div id="productDetails">
+                    <p style="text-align: center; color: var(--text-dark); padding: 20px;">Selecione um produto acima para editar ou excluir.</p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <div id="pageManagement" class="tab-content" style="display:none;">
+        <h2>📄 Gestão de Páginas Customizadas (CMS)</h2>
+        
+        <button id="newPageButton" class="btn-accent" onclick="resetPageForm()">➕ Criar Nova Página</button>
+
+        <div id="pageFormContainer" style="margin-top: 20px; border: 1px solid var(--border-color); padding: 20px; border-radius: 8px; display: none;">
+            
+            <input type="hidden" id="originalUrlPage" value="">
+            
+            <label for="pageTitleInput">Título da Página:</label>
+            <input type="text" id="pageTitleInput" placeholder="Ex: Política de Reembolso">
+            
+            <label for="pageUrlInput">URL Amigável (Será formatada para /page.php?url=**aqui**):</label>
+            <input type="text" id="pageUrlInput" placeholder="Ex: politica-reembolso">
+            
+            <label for="pageVisibilitySelect">Visibilidade:</label>
+            <select id="pageVisibilitySelect">
+                <option value="visible">Visível</option>
+                <option value="hidden">Oculta (apenas por link direto)</option>
+            </select>
+            
+            <label for="pageContentInput">Conteúdo da Página (Suporta HTML/CSS - Cole o código aqui):</label>
+            <textarea id="pageContentInput" rows="10" placeholder="Insira o HTML completo para o corpo da sua página."></textarea>
+            
+            <button id="savePageButton" class="btn-primary">SALVAR PÁGINA</button>
+            <button id="cancelPageButton" class="btn-warning" onclick="resetPageForm(true)" style="width: auto;">CANCELAR</button>
+        </div>
+
+        <h3 style="margin-top: 40px;">Gerenciar Páginas Existentes</h3>
+        <div id="pagesList">
+            </div>
+    </div>
+
+
+    <div id="customerOrders" class="tab-content" style="display:none;">
+        
+        <h2>👥 Últimos Pedidos de Clientes (Checkout Iniciado)</h2>
+        <p style="color: var(--text-medium); margin-bottom: 25px;">Estes são os clientes que preencheram o checkout e viram a chave de pagamento. Status: PENDENTE.</p>
+
+        <div class="metrics-grid" style="grid-template-columns: 1fr;">
+            <div class="metric-card order-count" style="text-align: center; border-left: 5px solid var(--warning-color);">
+                <h3 style="color: var(--text-light); font-size: 1.1em; margin-bottom: 10px;">Total de Pedidos Pendentes</h3>
+                <span class="value" id="pendingOrdersCountDuplicate" style="font-size: 3em; color: var(--warning-color);">...</span>
+            </div>
+        </div>
+        
+        <div id="ordersList" style="margin-top: 20px;">
+            <p style="text-align: center; color: var(--text-medium);">Carregando lista de pedidos...</p>
+        </div>
+
+    </div>
+    </div>
+
+<script>
+    // Constantes
+    const PRODUCTS_FILE = '/products.json'; 
+    const SALES_LOG_FILE = '/sales_log.json'; 
+    const STORE_SETTINGS_FILE = '/store_settings.json'; 
+    const CUSTOMER_ORDERS_FILE = '/customer_orders.json'; 
+    const LOG_ENDPOINT = '/log_sale.php'; 
+    const PRODUCT_MANAGER_ENDPOINT = '/product_manager.php'; 
+    const CUSTOMER_MANAGER_ENDPOINT = '/customer_manager.php'; 
+    const SETTINGS_MANAGER_ENDPOINT = '/settings_manager.php'; 
+    const CMS_MANAGER_ENDPOINT = '/page_manager.php'; 
+
+    // Variáveis globais
+    let allProductsData = {}; 
+    let salesLogData = []; 
+    let customerOrdersData = []; 
+    let storeSettings = {}; 
+    let customPagesData = {}; 
+    
+    // UTILS
+    function displayMessage(text, isSuccess) {
+        const messageElement = document.getElementById('message');
+        messageElement.textContent = text;
+        messageElement.className = isSuccess ? 'message success' : 'message error';
+        messageElement.style.display = 'block';
+        
+        messageElement.style.padding = '15px';
+        messageElement.style.borderRadius = '8px';
+        messageElement.style.fontWeight = '700';
+        messageElement.style.marginTop = '15px';
+        
+        if (isSuccess) {
+            messageElement.style.backgroundColor = '#d4edda'; 
+            messageElement.style.color = '#155724'; 
+        } else {
+            messageElement.style.backgroundColor = '#f8d7da'; 
+            messageElement.style.color = '#721c24';
+        }
+
+        setTimeout(() => {
+            messageElement.style.display = 'none';
+        }, 8000);
+    }
+    
+    function valueToNumber(valueString) {
+        if (!valueString) return 0;
+        return parseFloat(valueString.toString().replace(/R\$/g, '').replace(/\./g, '').replace(',', '.').trim());
+    }
+
+    function numberToValue(number) {
+        if (isNaN(number)) return 'R$ 0,00';
+        return 'R$ ' + number.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    // --- LÓGICA DO ACORDEÃO (SANFONA) ---
+    function setupAccordions() {
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const isActive = this.classList.contains('active');
+
+                // Alterna o estado do item clicado
+                if (isActive) {
+                    this.classList.remove('active');
+                    content.style.display = 'none';
+                } else {
+                    this.classList.add('active');
+                    content.style.display = 'block';
+                }
+            });
+        });
+    }
+
+    
+    // ------------------------------------------------------------------
+    // LÓGICA DE GERENCIAMENTO DE PÁGINAS (CMS)
+    // ------------------------------------------------------------------
+
+    async function loadPages() {
+         try {
+            const response = await fetch(`${CMS_MANAGER_ENDPOINT}?action=load_all_pages&t=` + Date.now()); 
+            if (!response.ok) throw new Error("Falha ao buscar páginas customizadas.");
+            
+            const result = await response.json();
+            if (result.success && result.data) {
+                customPagesData = result.data;
+            } else {
+                 const fallbackResponse = await fetch(CUSTOM_PAGES_FILE + '?t=' + Date.now());
+                 customPagesData = await fallbackResponse.json();
+            }
+            renderPagesList();
+
+        } catch (error) {
+            console.error("Erro no loadPages:", error);
+            customPagesData = {};
+            renderPagesList();
+        }
+    }
+    
+    function renderPagesList() {
+        const pagesList = document.getElementById('pagesList');
+        pagesList.innerHTML = '';
+        
+        let html = '';
+        for (const url in customPagesData) {
+            const page = customPagesData[url];
+            const visibilityText = page.visibility === 'visible' ? 'Visível' : 'Oculta';
+            const visibilityColor = page.visibility === 'visible' ? 'var(--accent-color)' : 'var(--danger-color)';
+
+            html += `
+                <div class="cms-item-card">
+                    <div style="flex-grow: 1;">
+                        <h4 style="margin: 0; color: var(--text-light);">${page.title}</h4>
+                        <p style="margin: 5px 0 0 0; font-size: 0.9em; color: var(--text-medium);">
+                            URL: <a href="/page.php?url=${url}" target="_blank" style="color: var(--primary-color); text-decoration: none;">/page.php?url=${url}</a> | Status: <span style="color: ${visibilityColor};">${visibilityText}</span>
+                        </p>
+                    </div>
+                    <div class="cms-actions">
+                        <button class="btn-primary" onclick="editPage('${url}')" style="width: auto;">Editar</button>
+                        <button class="btn-delete" onclick="deletePage('${url}', '${page.title}')" style="width: auto;">Excluir</button>
+                        <a class="btn-view-page" href="/page.php?url=${url}" target="_blank" style="text-decoration: none; margin-left: 5px;">👁️ Ver</a>
+                    </div>
+                </div>
+            `;
+        }
+        
+        pagesList.innerHTML = html || '<p style="text-align: center; color: var(--text-medium); padding: 20px;">Nenhuma página customizada encontrada.</p>';
+    }
+
+    function resetPageForm(hide = false) {
+        const formContainer = document.getElementById('pageFormContainer');
+        if (hide) {
+            formContainer.style.display = 'none';
+        } else {
+            formContainer.style.display = 'block';
+            window.scrollTo({ top: formContainer.offsetTop - 50, behavior: 'smooth' });
+        }
+        document.getElementById('originalUrlPage').value = '';
+        document.getElementById('pageTitleInput').value = '';
+        document.getElementById('pageUrlInput').value = '';
+        document.getElementById('pageContentInput').value = '';
+        document.getElementById('pageVisibilitySelect').value = 'visible';
+    }
+    
+    function editPage(url) {
+        const page = customPagesData[url];
+        if (page) {
+            document.getElementById('pageFormContainer').style.display = 'block';
+            document.getElementById('originalUrlPage').value = url;
+            document.getElementById('pageTitleInput').value = page.title;
+            document.getElementById('pageUrlInput').value = page.url;
+            document.getElementById('pageContentInput').value = page.content;
+            document.getElementById('pageVisibilitySelect').value = page.visibility;
+            window.scrollTo({ top: document.getElementById('pageFormContainer').offsetTop - 50, behavior: 'smooth' });
+        }
+    }
+
+    async function savePage() {
+        const originalUrl = document.getElementById('originalUrlPage').value.trim();
+        const pageTitle = document.getElementById('pageTitleInput').value.trim();
+        const pageUrl = document.getElementById('pageUrlInput').value.trim();
+        const pageContent = document.getElementById('pageContentInput').value.trim();
+        const pageVisibility = document.getElementById('pageVisibilitySelect').value;
+
+        if (!pageTitle || !pageUrl || !pageContent) {
+            displayMessage("Preencha todos os campos obrigatórios para a página.", false);
+            return;
+        }
+        
+        const cleanUrl = pageUrl.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-*|-*$/g, '');
+        
+        const dataToSend = {
+            action: 'save_page',
+            title: pageTitle,
+            url: cleanUrl,
+            content: pageContent,
+            visibility: pageVisibility,
+            originalUrl: originalUrl 
+        };
+
+        try {
+            const response = await fetch(CMS_MANAGER_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataToSend),
+            });
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                displayMessage(`Página "${pageTitle}" salva com sucesso!`, true);
+                resetPageForm(true);
+                loadPages();
+            } else {
+                displayMessage(`Erro ao salvar página: ${result.message}`, false);
+            }
+        } catch (e) {
+            displayMessage("Erro de rede ao salvar página. Verifique o page_manager.php.", false);
+        }
+    }
+    
+    async function deletePage(url, title) {
+        if (!confirm(`Tem certeza que deseja EXCLUIR a página "${title}" (URL: ${url})?`)) {
+            return;
+        }
+
+        const dataToSend = {
+            action: 'delete_page',
+            url: url
+        };
+
+        try {
+            const response = await fetch(CMS_MANAGER_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataToSend),
+            });
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                displayMessage(`Página "${title}" excluída com sucesso!`, true);
+                loadPages(); 
+            } else {
+                displayMessage(`Erro ao excluir página: ${result.message}`, false);
+            }
+        } catch (e) {
+            displayMessage("Erro de rede ao excluir página.", false);
+        }
+    }
+
+
+    // ------------------------------------------------------------------
+    // LÓGICA DE CONFIGURAÇÕES DA LOJA (COM NOVOS CAMPOS)
+    // ------------------------------------------------------------------
+    
+    async function loadStoreSettings() {
+        try {
+            const response = await fetch(`${STORE_SETTINGS_FILE}?t=${Date.now()}`); 
+            if (!response.ok) throw new Error("Falha ao buscar configurações da loja.");
+            storeSettings = await response.json();
+            
+            document.getElementById('storeTitleInput').value = storeSettings.storeTitle || '';
+            document.getElementById('logoUrlInput').value = storeSettings.logoUrl || '';
+            document.getElementById('bannerUrlInput').value = storeSettings.bannerUrl || '';
+            // NOVOS CAMPOS LIDOS
+            document.getElementById('customCopyrightTextInput').value = storeSettings.customCopyrightText || '';
+            document.getElementById('faviconUrlInput').value = storeSettings.faviconUrl || '';
+            
+            const layout = storeSettings.layout || {};
+            document.getElementById('productsPerLineInput').value = layout.productsPerLineDesktop || 4;
+            document.getElementById('productsPerLineMobileInput').value = layout.productsPerLineMobile || 2; 
+
+            document.getElementById('primaryColorInput').value = storeSettings.primaryColor || '#5B48CC';
+            document.getElementById('secondaryColorInput').value = storeSettings.secondaryColor || '#28a745';
+            document.getElementById('headerColorInput').value = storeSettings.headerColor || '#ffffff';
+            document.getElementById('footerColorInput').value = storeSettings.footerColor || '#333333';
+
+            renderLinkFields('header', storeSettings.headerLinks || []);
+            renderLinkFields('footer', storeSettings.footerLinks || []);
+
+        } catch (error) {
+            storeSettings = {};
+            displayMessage(`Erro ao carregar configurações da loja. Criando padrões. (Detalhe: ${error.message})`, false); 
+        }
+    }
+
+    async function saveStoreSettings() {
+        const headerLinks = collectLinks('header');
+        const footerLinks = collectLinks('footer');
+        
+        const productsPerLineDesktop = parseInt(document.getElementById('productsPerLineInput').value);
+        const productsPerLineMobile = parseInt(document.getElementById('productsPerLineMobileInput').value);
+        
+        if (productsPerLineDesktop < 3 || productsPerLineDesktop > 5) {
+             displayMessage("Produtos por linha (Desktop) deve ser entre 3 e 5.", false);
+             return;
+        }
+        if (productsPerLineMobile < 1 || productsPerLineMobile > 2) {
+             displayMessage("Produtos por linha (Mobile) deve ser 1 ou 2.", false);
+             return;
+        }
+
+        const dataToSend = {
+            storeTitle: document.getElementById('storeTitleInput').value.trim(),
+            logoUrl: document.getElementById('logoUrlInput').value.trim(),
+            bannerUrl: document.getElementById('bannerUrlInput').value.trim(),
+            customCopyrightText: document.getElementById('customCopyrightTextInput').value.trim(),
+            faviconUrl: document.getElementById('faviconUrlInput').value.trim(),
+            
+            primaryColor: document.getElementById('primaryColorInput').value,
+            secondaryColor: document.getElementById('secondaryColorInput').value,
+            headerColor: document.getElementById('headerColorInput').value,
+            footerColor: document.getElementById('footerColorInput').value,
+            headerTextColor: '#333333',
+            footerTextColor: '#ffffff',
+            cardBgColor: '#ffffff',
+            layout: {
+                headerWidth: 'full', 
+                footerWidth: 'full',
+                productsPerLineDesktop: productsPerLineDesktop,
+                productsPerLineMobile: productsPerLineMobile 
+            },
+            headerLinks: headerLinks,
+            footerLinks: footerLinks
+        };
+        
+
+        try {
+            const response = await fetch(SETTINGS_MANAGER_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'update_settings', ...dataToSend }),
+            });
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                displayMessage("Configurações da loja salvas com sucesso! A loja foi recarregada.", true);
+                loadStoreSettings(); 
+            } else {
+                displayMessage(`Erro ao salvar configurações: ${result.message}`, false);
+            }
+        } catch (e) {
+            displayMessage("Erro de rede ao salvar configurações.", false);
+        }
+    }
+    
+    function renderLinkFields(type, links) {
+        const container = document.getElementById(`${type}LinksContainer`);
+        container.innerHTML = '';
+        links.forEach((link, index) => {
+            container.innerHTML += `
+                <div class="link-item" data-index="${index}">
+                    <input type="text" placeholder="Nome do Link" value="${link.name}" data-field="name">
+                    <input type="text" placeholder="URL (/page.php?url=politica)" value="${link.url}" data-field="url">
+                    <button class="btn-remove-link" onclick="removeLinkField(this, '${type}')">X</button>
+                </div>
+            `;
+        });
+    }
+
+    function addLinkField(type) {
+        const container = document.getElementById(`${type}LinksContainer`);
+        const div = document.createElement('div');
+        div.className = 'link-item';
+        div.innerHTML = `
+            <input type="text" placeholder="Nome do Link" value="" data-field="name">
+            <input type="text" placeholder="URL (/page.php?url=politica)" value="" data-field="url">
+            <button class="btn-remove-link" onclick="removeLinkField(this, '${type}')">X</button>
+        `;
+        container.appendChild(div);
+    }
+    
+    function removeLinkField(element) {
+        element.closest('.link-item').remove();
+    }
+    function collectLinks(type) {
+        const container = document.getElementById(`${type}LinksContainer`);
+        const links = [];
+        container.querySelectorAll('.link-item').forEach(item => {
+            const name = item.querySelector('[data-field="name"]').value.trim();
+            let url = item.querySelector('[data-field="url"]').value.trim();
+            if (name.toLowerCase() === 'home') url = 'index.html';
+
+            if (name && url) {
+                links.push({ name, url });
+            }
+        });
+        return links;
+    }
+
+
+    // ------------------------------------------------------------------
+    // LÓGICA DE PRODUTOS, VENDAS E PEDIDOS 
+    // ------------------------------------------------------------------
+    
+    async function fetchSalesLog() {
+        try {
+            const response = await fetch(`${SALES_LOG_FILE}?t=${Date.now()}`); 
+            if (!response.ok) { salesLogData = []; return; }
+            salesLogData = await response.json();
+            if (!Array.isArray(salesLogData)) { salesLogData = []; }
+            calculateTotalSales();
+        } catch (error) { salesLogData = []; }
+    }
+    function calculateTotalSales() {
+        let totalSales = 0;
+        let todaySales = 0;
+        const today = new Date().toISOString().split('T')[0];
+        
+        if (salesLogData.length > 0) {
+            salesLogData.forEach(sale => {
+                const value = valueToNumber(sale.value);
+                totalSales += value;
+                if (sale.date === today) { todaySales += value; }
+            });
+        }
+        document.getElementById('totalHistoryPlaceholder').textContent = numberToValue(totalSales);
+        document.getElementById('dailyTotal').textContent = numberToValue(todaySales);
+    }
+    async function fetchCustomerOrders() {
+         try {
+            const response = await fetch(`${CUSTOMER_MANAGER_ENDPOINT}?t=${Date.now()}`); 
+            if (!response.ok) { customerOrdersData = []; return; }
+            const result = await response.json();
+            if (result.success && Array.isArray(result.data)) { customerOrdersData = result.data; } else { customerOrdersData = []; }
+            const pendingCount = customerOrdersData.length;
+            document.getElementById('pendingOrdersCount').textContent = pendingCount;
+            document.getElementById('pendingOrdersCountDuplicate').textContent = pendingCount;
+
+        } catch (error) { customerOrdersData = []; }
+    }
+    function renderCustomerOrders() { 
+        const ordersList = document.getElementById('ordersList');
+        if (customerOrdersData.length === 0) { ordersList.innerHTML = '<p style="text-align: center; color: var(--text-medium); padding: 20px;">Nenhum pedido pendente encontrado.</p>'; return; }
+
+        let html = '';
+        customerOrdersData.forEach((order, index) => {
+            const status = order.paymentDetails.status || 'PENDENTE';
+            const valueDisplay = numberToValue(valueToNumber(order.productValue));
+            const orderId = `order-${order.timestamp}-${index}`;
+            
+            html += `
+                <div class="order-card">
+                    <div class="order-header" onclick="toggleOrderDetails('${orderId}')">
+                        <h4 style="color: var(--primary-color);">Pedido #${index + 1}: ${order.productTitle}</h4>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 1.3em; color: var(--primary-color);">${valueDisplay}</span>
+                            <span class="status-badge">${status}</span>
+                            <span class="icon">&rsaquo;</span>
+                        </div>
+                    </div>
+                    <div class="order-details-content" id="details-${orderId}">
+                        <h5 style="color: var(--text-light); margin-bottom: 5px;">Dados do Cliente:</h5>
+                        <p><strong>Nome:</strong> ${order.customerData.fullName}</p>
+                        <p><strong>Email:</strong> ${order.customerData.email}</p>
+                        <p><strong>Telefone:</strong> ${order.customerData.phone || 'N/A'}</p>
+                        <p><strong>CPF:</strong> ${order.customerData.cpf || 'N/A'}</p>
+                        
+                        <h5 style="color: var(--text-light); margin-bottom: 5px; margin-top: 15px;">Endereço de Cobrança:</h5>
+                        <p>${order.customerData.street}, ${order.customerData.number} - ${order.customerData.neighborhood}</p>
+                        <p>${order.customerData.city} - ${order.customerData.state}, ${order.customerData.cep}</p>
+                        
+                        <h5 style="color: var(--text-light); margin-bottom: 5px; margin-top: 15px;">Detalhes do Pagamento:</h5>
+                        <p><strong>Método:</strong> <span style="color: ${order.paymentDetails.method === 'PIX' ? 'var(--accent-color)' : '#3F51B5'}">${order.paymentDetails.method}</span></p>
+                        <p><strong>Chave/Código Usado:</strong> <span style="word-break: break-all;">${order.paymentDetails.keyUsed || 'Chave Não Encontrada'}</span></p>
+                    </div>
+                </div>
+            `;
+        });
+        ordersList.innerHTML = html;
+    }
+    function toggleOrderDetails(orderId) { 
+        const detailsDiv = document.getElementById(`details-${orderId}`);
+        const header = detailsDiv ? detailsDiv.previousElementSibling : null;
+        if (detailsDiv && header) {
+            const isVisible = detailsDiv.style.display === 'block';
+            detailsDiv.style.display = isVisible ? 'none' : 'block';
+            header.querySelector('.icon').style.transform = isVisible ? 'rotate(0deg)' : 'rotate(90deg)';
+        }
+    }
+    window.toggleOrderDetails = toggleOrderDetails;
+
+    async function loadProducts() {
+        try {
+            const response = await fetch(`${PRODUCTS_FILE}?t=${Date.now()}`); 
+            if (!response.ok) throw new Error("Falha ao buscar dados de produtos.");
+            allProductsData = await response.json();
+            let totalViews = 0;
+            for (const key in allProductsData) { totalViews += (allProductsData[key].views || 0); }
+            document.getElementById('totalViews').textContent = totalViews.toLocaleString('pt-BR');
+            populateProductSelects();
+            resetProductForm();
+        } catch (error) {
+            allProductsData = {};
+            populateProductSelects();
+            displayMessage("Erro grave ao carregar produtos. Verifique as permissões do products.json.", false);
+        }
+    }
+    
+    function populateProductSelects() {
+        const selectManage = document.getElementById('selectProductToManage');
+        const selectLog = document.getElementById('productSelectLog');
+        [selectManage, selectLog].forEach(select => {
+            const currentSelectedKey = select.value;
+            select.innerHTML = '<option value="">-- Selecione um Produto --</option>';
+            for (const key in allProductsData) {
+                const product = allProductsData[key];
+                const methodLabel = product.paymentMethod === 'BOLETO' ? 'BOLETO' : 'PIX';
+                const visibilityLabel = product.visibility === 'hidden' ? '(OCULTO)' : '';
+                const valueDisplay = numberToValue(valueToNumber(product.value));
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = `[${methodLabel}] ${product.title} ${visibilityLabel} (${valueDisplay})`;
+                select.appendChild(option);
+            }
+            if (currentSelectedKey && allProductsData[currentSelectedKey]) { select.value = currentSelectedKey; }
+        });
+        if (selectManage.value) { loadProductDetails(selectManage.value); } else { resetProductForm(); }
+    }
+    
+    function resetProductForm() {
+        document.getElementById('productKeyInputHidden').value = '';
+        document.getElementById('productTitleInput').value = '';
+        document.getElementById('productValueInput').value = '';
+        document.getElementById('productCategoryInput').value = '';
+        document.getElementById('productDescriptionInput').value = '';
+        document.getElementById('imageUrlsInput').value = '';
+        document.getElementById('paymentMethodSelect').value = 'PIX'; 
+        document.getElementById('numKeysSelect').value = '1';
+        document.getElementById('visibilitySelect').value = 'visible';
+        document.getElementById('createProductButton').textContent = 'CRIAR NOVO PRODUTO';
+        document.getElementById('createProductButton').className = 'btn-warning'; 
+        document.getElementById('imagePreviewContainer').innerHTML = '';
+        const detailsDiv = document.getElementById('productDetails');
+        if (detailsDiv) detailsDiv.innerHTML = '<p style="text-align: center; color: var(--text-dark); padding: 20px;">Selecione um produto acima para editar ou excluir.</p>';
+        const createHeader = document.querySelector('[data-accordion="create-product"]');
+        if (createHeader && createHeader.nextElementSibling) { createHeader.classList.add('active'); createHeader.nextElementSibling.style.display = 'block'; }
+        const manageHeader = document.querySelector('[data-accordion="manage-product"]');
+        if (manageHeader && manageHeader.nextElementSibling) { manageHeader.classList.remove('active'); manageHeader.nextElementSibling.style.display = 'none'; }
+    }
+    
+    function renderImagePreviews(urls) {
+        const container = document.getElementById('imagePreviewContainer');
+        container.innerHTML = '';
+        urls.forEach((url, index) => {
+            if (url.trim()) {
+                container.innerHTML += `<div class="image-preview" style="background-image: url('${url.trim()}')" title="Foto ${index + 1}"></div>`;
+            }
+        });
+    }
+    document.getElementById('imageUrlsInput').addEventListener('input', function() {
+        const urls = this.value.split(',').slice(0, 4); 
+        renderImagePreviews(urls);
+    });
+
+    function viewProductPage(productKey) {
+        const productUrl = `${window.location.origin}/product_page.php?produto=${productKey}`;
+        window.open(productUrl, '_blank');
+    }
+
+    async function loadProductDetails(productKey) {
+        const detailsDiv = document.getElementById('productDetails');
+        
+        if (!productKey) { resetProductForm(); return; }
+
+        detailsDiv.innerHTML = '<p style="text-align: center; color: var(--text-medium);">Carregando...</p>';
+
+        const product = allProductsData[productKey];
+
+        if (!product) { detailsDiv.innerHTML = '<p style="text-align: center; color: var(--danger-color);">Produto não encontrado ou dados ausentes.</p>'; return; }
+        
+        document.getElementById('productKeyInputHidden').value = productKey;
+        document.getElementById('productTitleInput').value = product.title;
+        document.getElementById('productValueInput').value = product.value;
+        document.getElementById('productCategoryInput').value = product.category || '';
+        document.getElementById('productDescriptionInput').value = product.description || '';
+        document.getElementById('imageUrlsInput').value = (product.images || []).join(', ');
+        document.getElementById('paymentMethodSelect').value = product.paymentMethod || 'PIX'; 
+        document.getElementById('numKeysSelect').value = product.keys.length.toString();
+        document.getElementById('visibilitySelect').value = product.visibility || 'visible';
+        document.getElementById('createProductButton').textContent = 'ATUALIZAR DADOS DO PRODUTO (Salvar)';
+        document.getElementById('createProductButton').className = 'btn-primary'; 
+        
+        renderImagePreviews(product.images || []);
+        
+        const productUrl = `${window.location.origin}/product_page.php?produto=${productKey}`;
+        const keyLabel = product.paymentMethod === 'BOLETO' ? 'Códigos de Barras' : 'Chaves Pix';
+        const inputPlaceholder = product.paymentMethod === 'BOLETO' ? 'Insira o Código de Barras' : 'Insira a chave Pix aqui';
+        const valueDisplay = numberToValue(valueToNumber(product.value));
+
+        let html = `
+            <h2 style="margin-top: 10px;">🔗 Link e Métricas</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <p style="font-weight: 600; color: var(--text-light); margin: 0;">Visualizações:</p>
+                <span style="font-size: 1.5em; font-weight: 800; color: var(--warning-color);">${(product.views || 0).toLocaleString('pt-BR')}</span>
+            </div>
+            <div class="product-url-display" style="text-align: center;">
+                <button class="btn-view-page" onclick="viewProductPage('${productKey}')">👁️ Ver Página do Produto</button>
+            </div>
+            <p style="text-align: center; color: var(--text-dark); font-size: 0.9em; margin-top: 10px; word-break: break-all;">URL: ${productUrl}</p>
+        `;
+        
+        html += `<h2 style="margin-top: 20px;">${keyLabel} Rotativos (${product.keys.length} Ativos - Valor: ${valueDisplay})</h2><p style="color: var(--text-medium); font-size: 0.9em;">Clique em 'Salvar' ao lado de cada chave para atualizá-la.</p><div class="pix-keys-list">`;
+        product.keys.forEach(keyData => {
+            html += `<div class="pix-key-item"><div class="pix-key-input-container" style="display: flex; gap: 10px; flex-grow: 1;"><input type="text" id="pixKey-${keyData.id}" value="${keyData.pixKey}" placeholder="${inputPlaceholder}" style="flex-grow: 1; margin-bottom: 0;"><button class="save-key-button btn-accent" style="width: auto; padding: 8px 15px; font-size: 0.9em; margin-top: 0;" onclick="updateProductPixKey('${productKey}', '${keyData.id}', document.getElementById('pixKey-${keyData.id}').value)">Salvar</button></div></div><p style="font-size: 0.8em; color: var(--text-dark); margin: 5px 0 10px 0;">ID da Chave: ${keyData.id}</p>`;
+        });
+        html += '</div>';
+        html += `<button class="btn-delete" onclick="deleteProduct('${productKey}', '${product.title}')" style="margin-top: 25px;">🚨 EXCLUIR ESTE PRODUTO PERMANENTEMENTE</button>`;
+        detailsDiv.innerHTML = html;
+
+        document.querySelector('[data-accordion="create-product"]').classList.remove('active');
+        document.getElementById('createProductContent').style.display = 'none';
+        const manageHeader = document.querySelector('[data-accordion="manage-product"]');
+        if (manageHeader && manageHeader.nextElementSibling) {
+            manageHeader.classList.add('active');
+            manageHeader.nextElementSibling.style.display = 'block';
+        }
+
+        window.viewProductPage = viewProductPage;
+    }
+
+    async function createOrUpdateProduct() {
+        const originalKey = document.getElementById('productKeyInputHidden').value.trim(); 
+        const productTitle = document.getElementById('productTitleInput').value.trim();
+        const productValue = document.getElementById('productValueInput').value.trim();
+        const paymentMethod = document.getElementById('paymentMethodSelect').value; 
+        const numKeys = document.getElementById('numKeysSelect').value;
+        const description = document.getElementById('productDescriptionInput').value.trim();
+        const category = document.getElementById('productCategoryInput').value.trim();
+        const visibility = document.getElementById('visibilitySelect').value;
+        const imagesInput = document.getElementById('imageUrlsInput').value.trim();
+        const images = imagesInput.split(',').map(url => url.trim()).filter(url => url.length > 5).slice(0, 4);
+
+        if (!productTitle || !productValue || !paymentMethod) {
+            displayMessage("O Título, Valor e Método de Pagamento são obrigatórios.", false);
+            return;
+        }
+
+        const dataToSend = { action: originalKey ? 'update_product' : 'create_product', title: productTitle, value: productValue, paymentMethod: paymentMethod, numKeys: numKeys, originalKey: originalKey, description: description, category: category, images: images, visibility: visibility };
+        
+        try {
+            const response = await fetch(PRODUCT_MANAGER_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dataToSend), });
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                displayMessage(`Produto ${productTitle} ${originalKey ? 'atualizado' : 'criado'} com sucesso!`, true);
+                loadProducts(); 
+                resetProductForm();
+            } else { displayMessage(`Erro ao criar/atualizar produto: ${result.message}`, false); }
+        } catch (e) { displayMessage("Erro de rede ao criar/atualizar produto. Verifique a consola.", false); }
+    }
+    
+    async function deleteProduct(productKey, title) {
+        if (!confirm(`Tem certeza que deseja EXCLUIR o produto "${title}" permanentemente?`)) {
+            return;
+        }
+
+        const dataToSend = {
+            action: 'delete_product',
+            productKey: productKey
+        };
+
+        try {
+            const response = await fetch(PRODUCT_MANAGER_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataToSend),
+            });
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                displayMessage(`Produto "${title}" excluído com sucesso!`, true);
+                loadProducts(); 
+                resetProductForm();
+            } else {
+                displayMessage(`Erro ao excluir produto: ${result.message}`, false);
+            }
+        } catch (e) {
+            displayMessage("Erro de rede ao excluir produto. Verifique a consola.", false);
+        }
+    }
+    
+    async function updateProductPixKey(productKey, keyId, newValue) {
+        if (!newValue || newValue.length < 5) {
+            displayMessage("O valor da chave não pode estar vazio.", false);
+            return;
+        }
+        
+        const dataToSend = {
+            action: 'update_pix_key',
+            productKey: productKey,
+            keyId: keyId,
+            pixKey: newValue
+        };
+
+        try {
+            const response = await fetch(PRODUCT_MANAGER_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataToSend),
+            });
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                displayMessage(`Chave/Código ${keyId} do produto ${productKey} atualizada com sucesso!`, true);
+                loadProductDetails(productKey); 
+            } else {
+                displayMessage(`Erro ao atualizar chave: ${result.message}`, false);
+            }
+        } catch (e) {
+            displayMessage("Erro de rede ao atualizar chave. Verifique a consola.", false);
+        }
+    }
+
+    async function logSale() {
+        const selectedKey = document.getElementById('productSelectLog').value;
+        const selectedProduct = allProductsData[selectedKey];
+        if (!selectedKey || !selectedProduct) { displayMessage("Selecione um produto válido para registrar a venda.", false); return; }
+        const saleValue = selectedProduct.value;
+        if (!saleValue) { displayMessage("O valor do produto selecionado não pôde ser determinado.", false); return; }
+        const dataToSend = { packageKey: selectedKey, value: saleValue };
+
+        try {
+            const response = await fetch(LOG_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dataToSend), });
+            const result = await response.json();
+            if (response.ok && result.success) {
+                displayMessage(`Venda de ${selectedProduct.title} (R$ ${saleValue}) registrada!`, true);
+                fetchSalesLog(); 
+            } else { displayMessage(`Erro ao registrar venda: ${result.message}`, false); }
+        } catch (e) { displayMessage("Erro de rede ao registrar venda.", false); }
+    }
+    
+    // NOVO: Função para resetar métricas e views
+    async function resetMetrics() {
+        if (!confirm("ATENÇÃO: Você tem certeza que deseja RESETAR TODAS AS VENDAS (LOG) E VISUALIZAÇÕES? Esta ação não pode ser desfeita.")) {
+            return;
+        }
+
+        try {
+            const response = await fetch(PRODUCT_MANAGER_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'reset_metrics' }),
+            });
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                displayMessage("Métricas e views resetadas com sucesso!", true);
+                // Recarrega todos os dados para refletir as mudanças
+                loadProducts();
+                fetchSalesLog();
+            } else {
+                displayMessage(`Erro ao resetar métricas: ${result.message}`, false);
+            }
+        } catch (e) {
+            displayMessage("Erro de rede ao resetar métricas.", false);
+        }
+    }
+    window.resetMetrics = resetMetrics; // Expor função
+
+    // ------------------------------------------------------------------
+    // INICIALIZAÇÃO
+    // ------------------------------------------------------------------
+
+    function openTab(evt, tabName) {
+        let i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; }
+        tablinks = document.getElementsByClassName("tab-button");
+        for (i = 0; i < tablinks.length; i++) { tablinks[i].className = tablinks[i].className.replace(" active", ""); }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+        
+        if (tabName === 'customerOrders') { fetchCustomerOrders().then(renderCustomerOrders); }
+        if (tabName === 'pageManagement') { loadPages(); }
+    }
+
+
+    async function initializeConfigLogic() {
+        // CORREÇÃO: Envolver todas as chamadas assíncronas no try/catch
+        try {
+            await Promise.all([
+                loadStoreSettings(), 
+                loadProducts(), 
+                fetchSalesLog(),
+                fetchCustomerOrders(),
+                loadPages() 
+            ]);
+        } catch (e) {
+             console.error("Erro fatal na inicialização do Painel:", e);
+             displayMessage("Erro grave ao carregar dados. Verifique a console para detalhes.", false);
+        }
+        
+        document.getElementById('lastUpdated').textContent = `${new Date().toLocaleTimeString('pt-BR')}`;
+        setInterval(() => {
+            fetchSalesLog();
+            fetchCustomerOrders();
+            document.getElementById('lastUpdated').textContent = `${new Date().toLocaleTimeString('pt-BR')}`;
+        }, 60000); 
+
+        // Listeners Principais
+        document.getElementById('createProductButton').addEventListener('click', createOrUpdateProduct);
+        document.getElementById('logSaleButton').addEventListener('click', logSale); 
+        document.getElementById('selectProductToManage').addEventListener('change', function() { loadProductDetails(this.value); });
+        
+        // Listeners de Páginas CMS
+        document.getElementById('savePageButton').addEventListener('click', savePage);
+        
+        // Setup Acordeão
+        setupAccordions();
+
+
+        const firstTab = document.querySelector('.tab-button');
+        if (firstTab) firstTab.click();
+    }
+
+    document.addEventListener('DOMContentLoaded', initializeConfigLogic); 
+    
+    // Expõe funções globais
+    window.addLinkField = addLinkField;
+    window.removeLinkField = removeLinkField;
+    window.editPage = editPage;
+    window.deletePage = deletePage;
+    window.resetPageForm = resetPageForm;
+    window.updateProductPixKey = updateProductPixKey;
+    window.deleteProduct = deleteProduct;
+</script>
+</body>
+</html>

@@ -1,0 +1,509 @@
+<?php
+// checkout.php
+header('Content-Type: text/html; charset=UTF-8');
+$file = 'pix_data.json';
+$productKey = $_GET['produto'] ?? null;
+$productData = null;
+$randomKey = "Erro: Produto não encontrado.";
+$productTitle = "Produto Não Encontrado";
+$productValue = "0,00";
+$paymentMethod = "PIX"; // Padrão
+
+if ($productKey) {
+    if (file_exists($file)) {
+        $content = file_get_contents($file);
+        $all_data = json_decode($content, true);
+        
+        if (isset($all_data[$productKey])) {
+            $productData = $all_data[$productKey];
+            $productTitle = $productData['title'];
+            $productValue = $productData['value'];
+            $paymentMethod = $productData['paymentMethod'] ?? 'PIX'; // Captura o método
+
+            if (!empty($productData['keys'])) {
+                // Lógica de Sorteio Aleatório da Chave/Código
+                $randomIndex = array_rand($productData['keys']);
+                $randomKeyObject = $productData['keys'][$randomIndex];
+                $randomKey = $randomKeyObject['pixKey']; // Usa o mesmo campo para PIX ou BOLETO
+            } else {
+                $randomKey = "Erro: Nenhuma chave/código configurado.";
+            }
+        }
+    }
+}
+
+// Lógica para definir textos e logos
+$isPix = $paymentMethod === 'PIX';
+$logoUrl = $isPix 
+    ? "https://www.advocacianunes.com.br/wp-content/uploads/2022/04/logo-pix-icone-1024.png"
+    : "https://laboratoriowestrupp.com.br/wp-content/uploads/2014/07/boleto.png";
+$mainButtonText = $isPix ? "PAGAR AGORA VIA PIX" : "GERAR BOLETO AGORA";
+$mainButtonColor = $isPix ? 'var(--primary-green)' : '#3F51B5';
+$copyButtonText = $isPix ? "COPIAR CHAVE PIX" : "COPIAR CÓDIGO DE BARRAS";
+$keyLabel = $isPix ? "Chave Pix (Copia e Cola):" : "Código de Barras (Linha Digitável):";
+$modalTitle = $isPix ? "FINALIZE SEU PAGAMENTO PIX" : "FINALIZE COM O BOLETO";
+$alertMessage = $isPix ? "A transação Pix expira rapidamente." : "O boleto tem 24h para ser pago. Após o vencimento, será necessário gerar um novo.";
+$alertTitle = $isPix ? "🚨 PAGAMENTO PENDENTE" : "📄 EMISSÃO PENDENTE";
+
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - <?php echo htmlspecialchars($productTitle); ?></title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variáveis de Cores (Mantidas) */
+        :root {
+            --primary-green: #28a745; 
+            --dark-green: #218838;
+            --text-dark: #222; 
+            --text-light: #666;
+            --red-urgency: #dc3545;
+            --background-light: #f4f4f7; 
+            --card-bg: #ffffff;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --highlight-bg: #fffbe6; 
+        }
+
+        /* Reset e Base */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-light);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        /* Oculta Elementor/CMS Injeção */
+        .elementor-heading-title.elementor-size-default, 
+        .entry-header, .page-title {
+            display: none !important;
+        }
+
+        /* Container Principal */
+        .main-container {
+            width: 100%;
+            max-width: 550px; 
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        /* Card de Checkout Principal */
+        .checkout-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 30px;
+            margin-top: 50px; 
+            border: 1px solid #ddd; 
+            text-align: center;
+        }
+        
+        .value-display {
+            font-size: 1.2em;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .product-name {
+            font-size: 2.5em; 
+            color: var(--primary-green);
+            font-weight: 800;
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        /* Alerta de Urgência */
+        .urgency-alert {
+            background-color: var(--highlight-bg);
+            border: 1px solid #ffcc00;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 30px;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.95em;
+            text-align: left; 
+        }
+        
+        .urgency-alert strong {
+            font-weight: 700;
+            color: var(--red-urgency);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Estilo para a LOGO no Checkout Principal */
+        .payment-logo-main {
+            height: auto;
+            margin-bottom: 15px;
+        }
+        
+        /* Botão PAGAR AGORA */
+        .pay-button {
+            display: block;
+            margin: 30px auto;
+            padding: 18px 35px;
+            font-size: 1.3em;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Classes de animação específicas */
+        .pulse-pix {
+            background-color: var(--primary-green);
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+            animation: pulse-green 2s infinite ease-in-out; 
+        }
+        .pulse-boleto {
+            background-color: #3F51B5; /* Azul do Boleto */
+            box-shadow: 0 4px 15px rgba(63, 81, 181, 0.4);
+            animation: pulse-boleto 2s infinite ease-in-out; 
+        }
+
+        /* Animações */
+        @keyframes pulse-green { 
+            0% { box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4); }
+            50% { box-shadow: 0 0 0 5px rgba(40, 167, 69, 0.2); }
+            100% { box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4); }
+        }
+        @keyframes pulse-boleto { 
+            0% { box-shadow: 0 4px 15px rgba(63, 81, 181, 0.4); }
+            50% { box-shadow: 0 0 0 5px rgba(63, 81, 181, 0.2); }
+            100% { box-shadow: 0 4px 15px rgba(63, 81, 181, 0.4); }
+        }
+        
+        .pay-button.pulse-pix:hover { 
+            background-color: var(--dark-green);
+        }
+        .pay-button.pulse-boleto:hover { 
+            background-color: #303f9f; /* Azul escuro no hover */
+        }
+
+        /* --- Modal (Pop-up) ULTRA COMPACTO --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 99999; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto; 
+            background-color: rgba(0,0,0,0.8);
+            padding: 5px; 
+            box-sizing: border-box;
+        }
+
+        .modal-content {
+            font-family: 'Poppins', sans-serif !important;
+            background-color: var(--card-bg);
+            /* Margem em % para manter no centro/topo */
+            margin: 5% auto; 
+            padding: 20px; 
+            border-radius: 15px;
+            width: 90%;
+            max-width: 300px; /* **ULTRA COMPACTO PARA MOBILE** */
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            border: 5px solid var(--primary-green); 
+            box-sizing: border-box;
+            max-height: 98vh;
+        }
+        
+        @keyframes animatetop {
+            from {top: -300px; opacity: 0}
+            to {top: 0; opacity: 1}
+        }
+        .close-btn { color: var(--text-light); float: right; font-size: 38px; font-weight: 300; line-height: 1; transition: color 0.2s; cursor: pointer; }
+        .close-btn:hover, .close-btn:focus { color: var(--red-urgency); }
+
+        /* Títulos do Modal */
+        .modal-header {
+            padding-bottom: 5px; /* Ultra Reduzido */
+            margin-bottom: 10px; /* Ultra Reduzido */
+        }
+        .urgency-title-modal {
+            font-size: 1.3em; /* Ultra Reduzido */
+            margin-bottom: 5px;
+        }
+        
+        /* Instrução específica */
+        .instruction-text {
+            font-size: 0.85em; /* Ultra Reduzido */
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+
+        /* Contagem Regressiva */
+        #countdown {
+            font-size: 2.2em; /* Ultra Reduzido */
+            margin: 5px 0 10px 0; /* Ultra Reduzido */
+        }
+
+        /* Valor Pix */
+        .pix-value-label { 
+            font-size: 0.8em; /* Ultra Reduzido */
+            margin-top: 10px; 
+        }
+        .pix-info-value {
+            font-size: 2em; /* Ultra Reduzido */
+            margin-bottom: 15px; /* Ultra Reduzido */
+        }
+
+        /* Chave Pix e Botão Copiar */
+        .pix-container {
+            padding: 10px; /* Ultra Reduzido */
+            margin-bottom: 10px; /* Ultra Reduzido */
+        }
+        .pix-container h3 {
+             font-size: 0.9em; /* Ultra Reduzido */
+        }
+        
+        .pix-key-display {
+            font-size: 0.85em; /* Ultra Reduzido */
+            padding: 5px; 
+            margin-bottom: 5px;
+        }
+        
+        #copyPixBtn {
+            padding: 8px 20px; /* Ultra Reduzido */
+            font-size: 0.9em; 
+        }
+        
+        /* Ajustes Mobile (Celular) */
+        @media (max-width: 600px) {
+            .modal-content {
+                width: 98%; 
+                margin: 5px auto; 
+                padding: 10px; /* Mínimo necessário */
+                border-width: 3px;
+            }
+            .product-name {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="checkout-card">
+        
+        <img src="<?php echo htmlspecialchars($logoUrl); ?>" 
+             alt="Logo Pagamento" 
+             class="payment-logo-main" 
+             style="width: <?php echo $isPix ? '75px' : '150px'; ?>;"> 
+        
+        <div class="value-display" style="margin-top: 10px;">Você está pagando por:</div>
+        <strong class="product-name"><?php echo htmlspecialchars($productTitle); ?></strong>
+
+        <div class="urgency-alert">
+            <strong><?php echo htmlspecialchars($alertTitle); ?></strong>
+            <p style="margin: 5px 0 0 0; font-size: 0.9em;"><?php echo htmlspecialchars($alertMessage); ?></p>
+        </div>
+
+        <button 
+            id="payButton" 
+            class="pay-button <?php echo $isPix ? 'pulse-pix' : 'pulse-boleto'; ?>">
+            <?php echo htmlspecialchars($mainButtonText); ?> R$ <?php echo htmlspecialchars($productValue); ?>
+        </button>
+
+        <p style="font-size: 0.9em; color: var(--text-light); margin-top: 30px;">
+            Confirmação após o pagamento.
+        </p>
+    </div>
+
+
+    <div id="pixModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            
+            <div class="modal-header">
+                <img src="<?php echo htmlspecialchars($logoUrl); ?>" 
+                     alt="Logo Pagamento" 
+                     class="payment-logo-main" 
+                     style="width: <?php echo $isPix ? '80px' : '120px'; ?>;">
+                
+                <?php if ($isPix): ?>
+                    <p style="font-size: 1.1em; color: var(--text-dark); margin-bottom: 5px;">Seu Pix expira em:</p>
+                    <div id="countdown">05:00</div>
+                <?php else: ?>
+                    <p class="instruction-text">
+                        Copie o código de barras abaixo e pague-o no aplicativo do seu banco (opção "Pagar Boleto") ou em qualquer agência bancária/lotérica.
+                    </p>
+                <?php endif; ?>
+
+                <h2 class="urgency-title-modal"><?php echo htmlspecialchars($modalTitle); ?></h2>
+            </div>
+            
+            <div class="package-details">
+                <p style="color: var(--text-light);">Produto: <strong><?php echo htmlspecialchars($productTitle); ?></strong></p>
+            </div>
+
+            <div class="pix-value-label">VALOR TOTAL DO PEDIDO:</div>
+            <div class="pix-info-value" id="pixValueDisplay">R$ <?php echo htmlspecialchars($productValue); ?></div>
+
+            <div class="pix-container">
+                <h3><?php echo htmlspecialchars($keyLabel); ?></h3>
+                <div class="pix-key-display" id="pixKeyDisplay"><?php echo htmlspecialchars($randomKey); ?></div>
+                <button id="copyPixBtn"><?php echo htmlspecialchars($copyButtonText); ?></button>
+                <div class="copy-message" id="copyMessage"></div>
+            </div>
+            
+            <p style="font-size: 0.85em; color: var(--text-light); margin-top: 15px;">
+                <?php echo $isPix ? "Pagamento instantâneo. Confirmação imediata." : "O prazo de compensação do Boleto é de até 3 dias úteis."; ?>
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Variáveis PHP injetadas no JavaScript
+    const initialKey = "<?php echo addslashes($randomKey); ?>";
+    const initialValue = "<?php echo addslashes($productValue); ?>";
+    const paymentMethod = "<?php echo addslashes($paymentMethod); ?>"; // PIX ou BOLETO
+    const isPix = paymentMethod === 'PIX';
+    const copyButtonText = isPix ? "COPIAR CHAVE PIX" : "COPIAR CÓDIGO DE BARRAS"; // Variável auxiliar
+
+    function updatePixDisplay(key, value) {
+        const keyDisplay = document.getElementById('pixKeyDisplay');
+        const valueDisplay = document.getElementById('pixValueDisplay');
+        
+        if (keyDisplay) keyDisplay.textContent = key || 'Erro ao carregar código.';
+        if (valueDisplay) valueDisplay.textContent = `R$ ${value}` || 'R$ N/A';
+    }
+    
+    function initializePixLogic() {
+        const modal = document.getElementById("pixModal");
+        const btn = document.getElementById("payButton");
+        const closeSpan = document.getElementsByClassName("close-btn")[0];
+        const copyMessage = document.getElementById('copyMessage');
+        const copyPixBtn = document.getElementById('copyPixBtn');
+        const countdownElement = document.getElementById('countdown');
+
+        let countdownInterval; 
+        const timerDuration = 300; // 5 minutos (Apenas para PIX)
+
+        // Garante que o display inicial é o carregado pelo PHP
+        updatePixDisplay(initialKey, initialValue);
+        
+        // Função de Contagem Regressiva (Executada somente se for PIX)
+        function startCountdown(duration) {
+            if (!isPix) return; // Não faz nada se for Boleto
+            
+            let timer = duration;
+            let minutes, seconds;
+            
+            clearInterval(countdownInterval);
+            if(copyPixBtn) {
+                copyPixBtn.disabled = false;
+                copyPixBtn.textContent = copyButtonText;
+                copyPixBtn.style.backgroundColor = 'var(--primary-green)';
+            }
+            if(copyMessage) copyMessage.textContent = '';
+
+
+            countdownInterval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                if(countdownElement) countdownElement.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(countdownInterval);
+                    if(countdownElement) countdownElement.textContent = "EXPIRADO!";
+                    if(copyPixBtn) {
+                        copyPixBtn.disabled = true; 
+                        copyPixBtn.textContent = "CHAVE PIX EXPIRADA";
+                        copyPixBtn.style.backgroundColor = '#6c757d'; 
+                    }
+                    if(copyMessage) copyMessage.textContent = 'Por favor, atualize a página para gerar uma nova chave.';
+                }
+            }, 1000);
+            
+        }
+        
+        // Lógica de Abertura do Pop-up e Contagem
+        if(btn) {
+            btn.onclick = function() {
+                const currentKey = document.getElementById('pixKeyDisplay').textContent;
+                const keyIsValid = currentKey.indexOf('Erro') === -1; 
+
+                if (keyIsValid) {
+                    setTimeout(() => {
+                        if(modal) modal.style.display = "block";
+                        if(isPix) {
+                            startCountdown(timerDuration); // Inicia a contagem apenas para PIX
+                        }
+                    }, 100); 
+                } else {
+                    alert('Erro: Não foi possível carregar o código de pagamento. Por favor, recarregue a página ou entre em contato.');
+                }
+            }
+        }
+
+        // Lógica de Fechamento do Pop-up (X e Clique Fora)
+        if(closeSpan) {
+            closeSpan.onclick = function() {
+                if(modal) modal.style.display = "none";
+                clearInterval(countdownInterval); 
+            }
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                if(modal) modal.style.display = "none";
+                clearInterval(countdownInterval); 
+            }
+        }
+
+        // Lógica do Botão Copiar
+        if(copyPixBtn) {
+            copyPixBtn.onclick = function() {
+                const keyToCopy = document.getElementById('pixKeyDisplay').textContent;
+                const keyIsValid = keyToCopy.indexOf('Erro') === -1;
+                
+                // Verifica se é PIX e se expirou. Se for Boleto, a expiração é irrelevante para a cópia.
+                const expired = isPix && countdownElement && countdownElement.textContent === "EXPIRADO!";
+
+                if (!copyPixBtn.disabled && keyIsValid && !expired) {
+                    navigator.clipboard.writeText(keyToCopy).then(function() {
+                        if(copyMessage) copyMessage.textContent = `${isPix ? 'Chave Pix' : 'Código de Barras'} copiado com sucesso!`;
+                        setTimeout(() => { if(copyMessage) copyMessage.textContent = ''; }, 3000); 
+                    }, function(err) {
+                        if(copyMessage) copyMessage.textContent = 'Erro ao copiar: Seu navegador pode não suportar esta função. Copie manualmente o código.';
+                    });
+                } else if (expired) {
+                    if(copyMessage) copyMessage.textContent = 'A chave Pix expirou. Atualize a página.';
+                } else {
+                    if(copyMessage) copyMessage.textContent = 'Não há código válido para copiar.';
+                }
+            };
+        }
+    }
+    
+    window.addEventListener('load', initializePixLogic);
+    document.addEventListener('DOMContentLoaded', initializePixLogic); 
+    
+</script>
+</body>
+</html>

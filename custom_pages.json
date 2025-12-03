@@ -1,0 +1,32 @@
+{
+    "politica-reembolso": {
+        "title": "Política de Reembolso",
+        "content": "<p style=\"font-size: 1.1em; color: #5B48CC;\"><strong>Garantia de 7 dias<\/strong><\/p><p>Aceitamos devoluções em até 7 dias corridos após o recebimento do produto, desde que o item esteja nas condições originais. Para iniciar o processo, entre em contato conosco.<\/p>",
+        "url": "politica-reembolso",
+        "visibility": "visible"
+    },
+    "contato": {
+        "title": "Fale Conosco",
+        "content": "<h2>Entre em contato<\/h2><p>Envie um email para <strong>suporte@kiwify.com<\/strong> ou ligue para (11) 98888-7777.<\/p>",
+        "url": "contato",
+        "visibility": "visible"
+    },
+    "termos": {
+        "title": "Termos de Uso",
+        "content": "<h3>1. Aceitação dos Termos<\/h3><p>Ao acessar e usar nossa loja, você aceita integralmente nossos termos e condições. Reservamos o direito de alterar estes termos a qualquer momento.<\/p>",
+        "url": "termos",
+        "visibility": "visible"
+    },
+    "privacidade": {
+        "title": "Política de Privacidade",
+        "content": "<h3>1. Coleta de Dados<\/h3><p>Coletamos seu nome e e-mail apenas para processar pedidos e enviar informações relevantes. Não compartilhamos seus dados com terceiros.<\/p>",
+        "url": "privacidade",
+        "visibility": "visible"
+    },
+    "https-meupainel-divinassim-com-br-c": {
+        "title": "SAC DA LOJA",
+        "content": "DFDFDER RETWER",
+        "url": "https-meupainel-divinassim-com-br-c",
+        "visibility": "visible"
+    }
+}

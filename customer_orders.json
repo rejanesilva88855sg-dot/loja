@@ -1,0 +1,199 @@
+[
+    {
+        "timestamp": 1764671484,
+        "date": "2025-12-02 10:31:24",
+        "packageKey": "produto-cruzeiro-caribe",
+        "productTitle": "Cruzeiro 7 Dias - Caribe",
+        "productValue": "8.990,00",
+        "customerData": {
+            "fullName": "JUNIOR",
+            "email": "igor20772s@gmail.com",
+            "cpf": "073.922.797-18",
+            "phone": "(11) 9885-8452",
+            "cep": "01010-010",
+            "street": "Praça Antônio Prado",
+            "number": "1012",
+            "neighborhood": "Sé",
+            "city": "São Paulo",
+            "state": "SP"
+        },
+        "paymentDetails": {
+            "method": "PIX",
+            "keyUsed": "98765432101",
+            "status": "PENDENTE",
+            "cardDetails": []
+        }
+    },
+    {
+        "timestamp": 1764663639,
+        "date": "2025-12-02 08:20:39",
+        "packageKey": "produto-cruzeiro-caribe",
+        "productTitle": "Cruzeiro 7 Dias - Caribe",
+        "productValue": "8.990,00",
+        "customerData": {
+            "fullName": "ADAILSON CESAR SERAFIM JUNIOR",
+            "email": "igor20772s@gmail.com",
+            "cpf": "073.922.797-18",
+            "phone": "(11) 9885-8452",
+            "cep": "01020-010",
+            "street": "Rua das Carmelitas",
+            "number": "652",
+            "neighborhood": "Sé",
+            "city": "São Paulo",
+            "state": "SP"
+        },
+        "paymentDetails": {
+            "method": "PIX",
+            "keyUsed": "00020126740014br.gov.bcb.pix2552...",
+            "status": "PENDENTE",
+            "cardDetails": []
+        }
+    },
+    {
+        "timestamp": 1764663627,
+        "date": "2025-12-02 08:20:27",
+        "packageKey": "333333333",
+        "productTitle": "333333333",
+        "productValue": "5000",
+        "customerData": {
+            "fullName": "ADAILSON CESAR SERAFIM JUNIOR",
+            "email": "igor20772s@gmail.com",
+            "cpf": "073.922.797-18",
+            "phone": "(11) 9885-8452",
+            "cep": "01020-010",
+            "street": "Rua das Carmelitas",
+            "number": "652",
+            "neighborhood": "Sé",
+            "city": "São Paulo",
+            "state": "SP"
+        },
+        "paymentDetails": {
+            "method": "BOLETO",
+            "keyUsed": "CHAVE\/CODIGO-A-SER-CONFIGURADO-9",
+            "status": "PENDENTE",
+            "cardDetails": []
+        }
+    },
+    {
+        "timestamp": 1764662182,
+        "date": "2025-12-02 07:56:22",
+        "packageKey": "333333333",
+        "productTitle": "333333333",
+        "productValue": "5000",
+        "customerData": {
+            "fullName": "ADAILSON CESAR SERAFIM JUNIOR",
+            "email": "igor20772s@gmail.com",
+            "cpf": "073.922.797-18",
+            "phone": "(11) 9885-8452",
+            "cep": "01020-010",
+            "street": "Rua das Carmelitas",
+            "number": "652",
+            "neighborhood": "Sé",
+            "city": "São Paulo",
+            "state": "SP"
+        },
+        "paymentDetails": {
+            "method": "BOLETO",
+            "keyUsed": "CHAVE\/CODIGO-A-SER-CONFIGURADO-1",
+            "status": "PENDENTE",
+            "cardDetails": []
+        }
+    },
+    {
+        "timestamp": 1764662180,
+        "date": "2025-12-02 07:56:20",
+        "packageKey": "333333333",
+        "productTitle": "333333333",
+        "productValue": "5000",
+        "customerData": {
+            "fullName": "ADAILSON CESAR SERAFIM JUNIOR",
+            "email": "igor20772s@gmail.com",
+            "cpf": "073.922.797-18",
+            "phone": "(11) 9885-8452",
+            "cep": "01020-010",
+            "street": "Rua das Carmelitas",
+            "number": "652",
+            "neighborhood": "Sé",
+            "city": "São Paulo",
+            "state": "SP"
+        },
+        "paymentDetails": {
+            "method": "PIX",
+            "keyUsed": "CHAVE\/CODIGO-A-SER-CONFIGURADO-1",
+            "status": "PENDENTE",
+            "cardDetails": []
+        }
+    },
+    {
+        "timestamp": 1764660495,
+        "date": "2025-12-02 07:28:15",
+        "packageKey": "ferias-sem-fim",
+        "productTitle": "ferias sem fim",
+        "productValue": "4600",
+        "customerData": {
+            "fullName": "ADAILSON CESAR SERAFIM JUNIOR",
+            "email": "igor20772s@gmail.com",
+            "cpf": "073.922.797-18",
+            "phone": "(11) 9885-8452",
+            "cep": "01020-010",
+            "street": "Rua das Carmelitas",
+            "number": "652",
+            "neighborhood": "Sé",
+            "city": "São Paulo",
+            "state": "SP"
+        },
+        "paymentDetails": {
+            "method": "PIX",
+            "keyUsed": "CHAVE\/CODIGO-A-SER-CONFIGURADO-3",
+            "status": "PENDENTE"
+        }
+    },
+    {
+        "timestamp": 1764660440,
+        "date": "2025-12-02 07:27:20",
+        "packageKey": "333333333",
+        "productTitle": "333333333",
+        "productValue": "5000",
+        "customerData": {
+            "fullName": "ADAILSON CESAR SERAFIM JUNIOR",
+            "email": "igor20772s@gmail.com",
+            "cpf": "073.922.797-18",
+            "phone": "(11) 9885-8452",
+            "cep": "01020-010",
+            "street": "Rua das Carmelitas",
+            "number": "652",
+            "neighborhood": "Sé",
+            "city": "São Paulo",
+            "state": "SP"
+        },
+        "paymentDetails": {
+            "method": "BOLETO",
+            "keyUsed": "CHAVE\/CODIGO-A-SER-CONFIGURADO-2",
+            "status": "PENDENTE"
+        }
+    },
+    {
+        "timestamp": 1764660411,
+        "date": "2025-12-02 07:26:51",
+        "packageKey": "333333333",
+        "productTitle": "333333333",
+        "productValue": "5000",
+        "customerData": {
+            "fullName": "ADAILSON CESAR SERAFIM JUNIOR",
+            "email": "igor20772s@gmail.com",
+            "cpf": "073.922.797-18",
+            "phone": "(11) 9885-8452",
+            "cep": "01020-010",
+            "street": "Rua das Carmelitas",
+            "number": "652",
+            "neighborhood": "Sé",
+            "city": "São Paulo",
+            "state": "SP"
+        },
+        "paymentDetails": {
+            "method": "PIX",
+            "keyUsed": "CHAVE\/CODIGO-A-SER-CONFIGURADO-2",
+            "status": "PENDENTE"
+        }
+    }
+]

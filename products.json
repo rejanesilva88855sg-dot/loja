@@ -1,0 +1,188 @@
+{
+    "produto-cruzeiro-caribe": {
+        "title": "Cruzeiro 7 Dias - Caribe Premium",
+        "value": "8.990,00",
+        "paymentMethod": "PIX",
+        "keys": [
+            {
+                "id": "chave_01",
+                "pixKey": "email-pix-paris@viagens.com.br"
+            },
+            {
+                "id": "chave_02",
+                "pixKey": "98765432101"
+            },
+            {
+                "id": "chave_03",
+                "pixKey": "12345678901"
+            }
+        ],
+        "category": "Viagens Premium",
+        "description": "<p>Uma experiência de cruzeiro inesquecível pelo Caribe, visitando as mais belas ilhas por 7 dias. Tudo incluído no pacote. Aproveite o luxo e a tranquilidade no mar.<\/p><h2>O que está incluído?<\/h2><ul><li>Cabine luxo com varanda<\/li><li>Alimentação completa<\/li><li>Excursões guiadas<\/li><\/ul>",
+        "images": [
+            "https:\/\/picsum.photos\/400\/400?item=caribe1",
+            "https:\/\/picsum.photos\/400\/400?item=caribe2",
+            "https:\/\/picsum.photos\/400\/400?item=caribe3"
+        ],
+        "visibility": "visible",
+        "views": 2
+    },
+    "ferias-sem-fim": {
+        "title": "Pacote Férias Sem Fim (Misterioso)",
+        "value": "4.600,00",
+        "paymentMethod": "PIX",
+        "keys": [
+            {
+                "id": "chave_692e94fe9dd78",
+                "pixKey": "PIX-CHAVE-AQUI"
+            }
+        ],
+        "category": "Viagens Econômicas",
+        "description": "Pacote surpresa para um destino paradisíaco. Descubra a localização apenas na confirmação da compra! Excelente para quem busca aventura.",
+        "images": [
+            "https:\/\/picsum.photos\/400\/400?item=mistery1"
+        ],
+        "visibility": "hidden",
+        "views": 0
+    },
+    "ggggggg": {
+        "title": "GGGGGGG",
+        "value": "333",
+        "paymentMethod": "PIX",
+        "keys": [
+            {
+                "id": "chave_692f375dc1b4d1.25980866",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-1"
+            },
+            {
+                "id": "chave_692f4570c818e1.56414385",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-1"
+            },
+            {
+                "id": "chave_692f4570c81982.88171273",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-2"
+            },
+            {
+                "id": "chave_692f4570c819a3.07488370",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-3"
+            },
+            {
+                "id": "chave_692f4570c819b5.81872614",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-4"
+            },
+            {
+                "id": "chave_692f4570c819c7.67872248",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-5"
+            },
+            {
+                "id": "chave_692f4570c819d3.88785309",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-6"
+            },
+            {
+                "id": "chave_692f4570c819e5.87383610",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-7"
+            },
+            {
+                "id": "chave_692f4570c819f0.87722195",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-8"
+            },
+            {
+                "id": "chave_692f4570c81a14.67909986",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-9"
+            }
+        ],
+        "category": "SDFSFD",
+        "description": "SDFSFASDF DSAFSADFSDAF SDAFSDASADF SADFSDAF",
+        "images": [
+            "https:\/\/cdn-pen.nuneshost.com\/images\/220824-msc-cruzeiro-Seascape.jpg"
+        ],
+        "visibility": "visible",
+        "views": 3
+    },
+    "gfhfd": {
+        "title": "GFHFD",
+        "value": "444",
+        "paymentMethod": "PIX",
+        "keys": [
+            {
+                "id": "chave_692f383b2120a4.64637919",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-1"
+            }
+        ],
+        "category": "FGDG",
+        "description": "FSDGFD",
+        "images": [
+            "https:\/\/s2-oglobo.glbimg.com\/J-2XXchvBJwfE2ZggnyHougVLoU=\/0x0:4032x3024\/888x0\/smart\/filters:strip_icc()\/i.s3.glbimg.com\/v1\/AUTH_da025474c0c44edd99332dddb09cabe8\/internal_photos\/bs\/2022\/P\/x\/8JcBDxQZyjOLlLqqbe4w\/carnival-valor-bow-new-livery-.jpg"
+        ],
+        "visibility": "visible",
+        "views": 0
+    },
+    "4fdegdg": {
+        "title": "4FDEGDG",
+        "value": "23432",
+        "paymentMethod": "PIX",
+        "keys": [
+            {
+                "id": "chave_692f384a5d5262.69532634",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-1"
+            }
+        ],
+        "category": "RETER",
+        "description": "RTGER ERTER",
+        "images": [
+            "https:\/\/brasilturis.com.br\/core\/smush-webp\/2024\/09\/Disney-Treasure-Exterior-scaled.jpg.webp"
+        ],
+        "visibility": "visible",
+        "views": 0
+    },
+    "24er": {
+        "title": "24ER",
+        "value": "2334",
+        "paymentMethod": "PIX",
+        "keys": [
+            {
+                "id": "chave_692f3862e9a137.93891370",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-1"
+            }
+        ],
+        "category": "RETER",
+        "description": "RSTWE",
+        "images": [
+            "https:\/\/www.vaipradisney.com\/blog\/wp-content\/uploads\/2022\/11\/disney-novo-navio-780x439.jpeg"
+        ],
+        "visibility": "visible",
+        "views": 2
+    },
+    "hjfghfh": {
+        "title": "HJFGHFH",
+        "value": "F545",
+        "paymentMethod": "PIX",
+        "keys": [
+            {
+                "id": "chave_692f46ec0ce5d3.36141400",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-1"
+            },
+            {
+                "id": "chave_692f46ec0ce678.24047030",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-2"
+            },
+            {
+                "id": "chave_692f46ec0ce696.56832108",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-3"
+            },
+            {
+                "id": "chave_692f46ec0ce6a2.39916688",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-4"
+            },
+            {
+                "id": "chave_692f46ec0ce6b5.23796620",
+                "pixKey": "CHAVE-PIX-A-SER-CONFIGURADA-5"
+            }
+        ],
+        "category": "FHGJFH",
+        "description": "4343",
+        "images": [],
+        "visibility": "visible",
+        "views": 0
+    }
+}
